@@ -1,0 +1,18 @@
+### Home Route
+GET http://127.0.0.1:5000/
+
+###
+
+### Predict PCOD
+POST http://127.0.0.1:5000/predict
+Content-Type: application/json
+
+{
+  "Age": 18,
+  "Irregular_Periods": 0,
+  "Excessive_Hair_Thinning": 1,
+  "Oily_Skin": 0,
+  "Weight_Gain": 1,
+  "Dark_Skin_Patches": 1,
+  "Pelvic_Pain": 1
+}

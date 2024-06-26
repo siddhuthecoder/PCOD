@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCOD Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 300px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .radio-group label {
+            margin-bottom: 0;
+        }
+        input[type="number"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .result.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .result.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PCOD Prediction</h1>
+        <form id="pcod-form">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="Age" required>
+            
+            <label>Irregular Periods:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="Irregular_Periods" value="1" required> Yes</label>
+                <label><input type="radio" name="Irregular_Periods" value="0"> No</label>
+            </div>
+            
+            <label>Excessive Hair Thinning:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="Excessive_Hair_Thinning" value="1" required> Yes</label>
+                <label><input type="radio" name="Excessive_Hair_Thinning" value="0"> No</label>
+            </div>
+            
+            <label>Oily Skin:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="Oily_Skin" value="1" required> Yes</label>
+                <label><input type="radio" name="Oily_Skin" value="0"> No</label>
+            </div>
+            
+            <label>Weight Gain:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="Weight_Gain" value="1" required> Yes</label>
+                <label><input type="radio" name="Weight_Gain" value="0"> No</label>
+            </div>
+            
+            <label>Dark Skin Patches:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="Dark_Skin_Patches" value="1" required> Yes</label>
+                <label><input type="radio" name="Dark_Skin_Patches" value="0"> No</label>
+            </div>
+            
+            <label>Pelvic Pain:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="Pelvic_Pain" value="1" required> Yes</label>
+                <label><input type="radio" name="Pelvic_Pain" value="0"> No</label>
+            </div>
+            
+            <input type="submit" value="Predict">
+        </form>
+        <div id="result" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('pcod-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const data = {
+                Age: parseInt(form.Age.value),
+                Irregular_Periods: parseInt(form.Irregular_Periods.value),
+                Excessive_Hair_Thinning: parseInt(form.Excessive_Hair_Thinning.value),
+                Oily_Skin: parseInt(form.Oily_Skin.value),
+                Weight_Gain: parseInt(form.Weight_Gain.value),
+                Dark_Skin_Patches: parseInt(form.Dark_Skin_Patches.value),
+                Pelvic_Pain: parseInt(form.Pelvic_Pain.value)
+            };
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const resultDiv = document.getElementById('result');
+            if (response.ok) {
+                const result = await response.json();
+                resultDiv.textContent = result.result;
+                resultDiv.className = 'result success';
+            } else {
+                const error = await response.json();
+                resultDiv.textContent = error.error;
+                resultDiv.className = 'result error';
+            }
+            resultDiv.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
