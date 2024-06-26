@@ -50,6 +50,3 @@ def predict():
     
     except KeyError as e:
         return jsonify({'error': f'Missing key: {e}'}), 400
-
-if __name__ == '__main__':
-    app.run(debug=True)
